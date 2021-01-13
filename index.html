@@ -1,15 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./assets/css/style.css"></script>
-    <title>Timed Quiz</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <title>Timed Quiz App</title>
 </head>
+
 <body>
-    
 
+    <!-- questions box start  -->
+    <main class="container">
+        <article id="question-container" class="hide">
+            <div id="question">Question</div>
+            <div id="answer-buttons" class="btn-grid">
+                <p id="btn">Answer 1</p>
+                <p id="btn">Answer 2</p>
+                <p id="btn">Answer 3</p>
+                <p id="btn">Answer 4</p>
+            </div>
+        </article>
+        <div class="controls">
+            <button id="start-btn" class="start-btn btn">Start Quiz</button>
+            <button id="next-btn" class="next-btn btn hide">Next</button>
+        </div>
+    </main>
+    <!-- questions box end -->
 
-    <script src="./assets/javascript/js.script"></script>
+    <script src="./assets/javascript/script.js"></script>
 </body>
+
 </html>
