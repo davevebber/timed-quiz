@@ -2,27 +2,59 @@
 const startButton = document.getElementById('start-btn');
 startButton.addEventListener('click', startGame);
 
+// questions
+const questionContainerElement = document.getElementById('question-container');
+const questionElement = document.getElementById('question')
+
+// answer buttons
+const answerButtonsElement = document.getElementById('answer-buttons')
+
 // next button and even listener for next question
 const nextButton = document.getElementById('next-btn');
 
+// shuffle questions
+let shuffledQuestions, currentQuestionsIndex
 
 function startGame() {
-    console.log('start game');
+    console.log('start game')
     startButton.classList.add('hide');
     nextButton.classList.remove('hide');
-
-
+    questionContainerElement.classList.remove('hide');
+    currentQuestionsIndex = 0
+    shuffledQuestions = questions.sort(() => Math.random() - .5)
+    setNextQuestion();
 };
 
 function setNextQuestion() {
+    showQuestion(shuffledQuestions[currentQuestionsIndex]);
+};
 
+function showQuestion(question) {
+    questionElement.innerText = question.question
 
-}
+};
 
 function selectAnswer() {
 
 
-}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -45,7 +77,7 @@ const questions = [
             { text: '6', correct: false },
         ]
     },
-{
+    {
         question: "Which of the following is not an insect?",
         answers: [
             { text: 'Beetle', correct: false },
@@ -55,7 +87,7 @@ const questions = [
         ]
     },
 
-{
+    {
         question: "How many planets are their in our solar system?",
         answers: [
             { text: '10', correct: false },
@@ -65,7 +97,7 @@ const questions = [
         ]
     },
 
-{
+    {
         question: "How many lives do cats have?",
         answers: [
             { text: '1', correct: false },
