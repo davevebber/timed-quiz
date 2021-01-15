@@ -163,14 +163,15 @@ const questions = [
 // timer function 
 
 function countDown() {
-    let seconds = 10;
+    let seconds = 45;
     function tick() {
         let counter = document.getElementById("time-left");
         seconds--;
         counter.innerHTML = "Timer: " + String(seconds);
-        if (seconds > 0) {
+        if (seconds === 0) {alert('Sorry, you ran out of time!')
+        finishGame() 
+        } else (seconds > 0)
             setTimeout(tick, 1000);
-        }
     }
     tick();
 };
