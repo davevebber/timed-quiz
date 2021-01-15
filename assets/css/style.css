@@ -85,3 +85,9 @@ body.wrong {
     display: flex;
     justify-content: center;
 }
+
+.center-highscore {
+    display: flex; 
+    justify-content: space-around;
+    align-items: center;
+}

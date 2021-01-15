@@ -1,9 +1,11 @@
+// variables 
 let score = localStorage.getItem('score');
+let shuffledQuestions, currentQuestionsIndex
+
+// const
 const scoreBtn = document.getElementById('correct-answers');
-const highscoresList = document.getElementById('highscores-list')
 const questionContainerElement = document.getElementById('question-container');
 const questionElement = document.getElementById('question')
-let shuffledQuestions, currentQuestionsIndex
 
 // start / next / finish / answer buttons
 const startButton = document.getElementById('start-btn');
@@ -13,7 +15,7 @@ const answerButtonsElement = document.getElementById('answer-buttons')
 
 // start game function
 function startGame() {
-    console.log('start game')
+    countDown();
     startButton.classList.add('hide');
     nextButton.classList.remove('hide');
     questionContainerElement.classList.remove('hide');
@@ -94,10 +96,9 @@ function clearStatusClass(element) {
 // finish game function
 function finishGame() {
     document.getElementById('finish-hide').classList.add('hide');
-    document.getElementById('container').classList.add('center');
-    alert('Well done! You finished the quiz!');
-    alert("Your score is " + score);
-    console.log(score);
+    document.getElementById('finish-show').classList.remove('hide');
+    document.getElementById('container').classList.add('center-highscore');
+    document.getElementById('time-left').classList.add('hide');
 }
 
 // event listeners 
@@ -158,3 +159,18 @@ const questions = [
         ]
     },
 ];
+
+// timer function 
+
+function countDown() {
+    let seconds = 10;
+    function tick() {
+        let counter = document.getElementById("time-left");
+        seconds--;
+        counter.innerHTML = "Timer: " + String(seconds);
+        if (seconds > 0) {
+            setTimeout(tick, 1000);
+        }
+    }
+    tick();
+};
