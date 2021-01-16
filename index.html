@@ -9,21 +9,22 @@
 </head>
 
 <body>
+  <!-- score -->
+    <div id="score-holder"class="score hide">
+        <span id="correct-answers">Score:</span>
+        <span id="final-score"></span>
+        <span id="final-initials"></span>
+    </div>
 
     <!-- questions box start  -->
-
     <main class="container" id="container">
+
+        <!-- submit initials for high scores -->
         <div id="finish-show" class="hide">
-            <input type="text" placeholder="Enter Your Initials" id="name" name="name"/>
-            <button type="submit">Submit</button>
+            <input type="text" placeholder="Enter Your Initials" id="name" name="name" />
+            <button id="submit-btn" type="submit">Submit</button>
         </div>
 
-        <div class="score">
-            <!-- score -->
-            <span id="correct-answers">Score:</span>
-            <!-- timer -->
-            <span id="time-left"></span>
-        </div>
         <!-- questions container -->
         <div id="finish-hide">
             <article id="question-container" class="hide">
@@ -44,6 +45,14 @@
         </div>
     </main>
     <!-- questions box end -->
+
+    <!-- timer -->
+    <div id="timer" class="score hide">     
+        <span id="time-left">Timer:</span>
+    </div>
+
+
+
 
     <script src="./assets/javascript/script.js"></script>
 </body>

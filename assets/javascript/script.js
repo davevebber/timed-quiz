@@ -1,17 +1,25 @@
 // variables 
-let score = localStorage.getItem('score');
+let score = 0;
 let shuffledQuestions, currentQuestionsIndex
+let playerScoreSpan = document.querySelector('#final-score');
+let playerInitialsSpan = document.querySelector('#final-initials');
 
 // const
 const scoreBtn = document.getElementById('correct-answers');
 const questionContainerElement = document.getElementById('question-container');
-const questionElement = document.getElementById('question')
+const questionElement = document.getElementById('question');
+const scoreBox = document.getElementById('score-box');
+const timerBox = document.getElementById('timer-box');
+const scoreHolder = document.getElementById('score-holder');
+const timer = document.getElementById('timer');
 
-// start / next / finish / answer buttons
+
+// start / next / finish / answer /submit buttons
 const startButton = document.getElementById('start-btn');
 const nextButton = document.getElementById('next-btn');
-const finishButton = document.getElementById('finish-btn')
-const answerButtonsElement = document.getElementById('answer-buttons')
+const finishButton = document.getElementById('finish-btn');
+const answerButtonsElement = document.getElementById('answer-buttons');
+const submitBtn = document.getElementById('submit-btn');
 
 // start game function
 function startGame() {
@@ -20,10 +28,12 @@ function startGame() {
     nextButton.classList.remove('hide');
     questionContainerElement.classList.remove('hide');
     scoreBtn.classList.remove('hide');
-    currentQuestionsIndex = 0
-    shuffledQuestions = questions.sort(() => Math.random() - .5)
+    scoreHolder.classList.remove('hide');
+    timer.classList.remove('hide');
+    currentQuestionsIndex = 0;
+    shuffledQuestions = questions.sort(() => Math.random() - .5);
     setNextQuestion();
-    score = 0
+    score = 0;
 };
 
 // set next question function
@@ -34,7 +44,7 @@ function setNextQuestion() {
 
 // show question function
 function showQuestion(question) {
-    questionElement.innerText = question.question
+    questionElement.innerText = question.question;
     question.answers.forEach(answer => {
         const button = document.createElement('button');
         button.innerText = answer.text;
@@ -49,7 +59,6 @@ function showQuestion(question) {
 
 // reset container function
 function resetState() {
-
     nextButton.classList.add('hide');
     while (answerButtonsElement.firstChild) {
         answerButtonsElement.removeChild(answerButtonsElement.firstChild);
@@ -71,7 +80,7 @@ function selectAnswer(e) {
         finishButton.classList.remove('hide');
     };
     if (selectedButton.dataset = correct) {
-        score++
+        score+=7
     }
     document.getElementById('correct-answers').innerHTML = "Score: " + score;
 };
@@ -87,7 +96,7 @@ function setStatusClass(element, correct) {
     };
 };
 
-// clears correct/wrong colors after each question
+// clears correct/wrong colors from buttons after each question
 function clearStatusClass(element) {
     element.classList.remove('correct');
     element.classList.remove('wrong');
@@ -99,15 +108,33 @@ function finishGame() {
     document.getElementById('finish-show').classList.remove('hide');
     document.getElementById('container').classList.add('center-highscore');
     document.getElementById('time-left').classList.add('hide');
+    document.getElementById('timer').classList.add('hide');
+}
+
+// save high scores / intials
+function submitScore() {
+    localStorage.setItem('player-initials', document.getElementById("name").value);
+    localStorage.setItem('player-score', JSON.stringify(score));
+}
+
+function renderLastRegistered() {
+    // Retrieve the last email and password from localStorage using `getItem()`
+    var playerInitials= localStorage.getItem('player-initials');
+    var playerScore = localStorage.getItem('player-score');
+  
+    // Set the text of the 'userEmailSpan' and 'userPasswordSpan' to the corresponding values from localStorage
+    playerInitials.textContent = playerInitials;
+    playerScore.textContent = playerScore;
+  
+    document.getElementById("final-initials").innerHTML = localStorage.getItem("player-initials");
+    document.getElementById("final-score").innerHTML = localStorage.getItem("player-score");
 }
 
 // event listeners 
 startButton.addEventListener('click', startGame);
-nextButton.addEventListener('click', () => {
-    currentQuestionsIndex++;
-    setNextQuestion();
-});
-finishButton.addEventListener('click', finishGame);
+nextButton.addEventListener('click', () => {currentQuestionsIndex++; setNextQuestion()});
+finishButton.addEventListener('click', finishGame, clearInterval(countDown, 0));
+submitBtn.addEventListener('click', submitScore, renderLastRegistered);
 
 // list of questions
 const questions = [
@@ -163,7 +190,7 @@ const questions = [
 // timer function 
 
 function countDown() {
-    let seconds = 45;
+    let seconds = 60
     function tick() {
         let counter = document.getElementById("time-left");
         seconds--;
