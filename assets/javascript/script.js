@@ -1,8 +1,10 @@
 // variables 
 let score = 0;
-let shuffledQuestions, currentQuestionsIndex
-let playerScoreSpan = document.querySelector('#final-score');
-let playerInitialsSpan = document.querySelector('#final-initials');
+let shuffledQuestions, currentQuestionsIndex;
+let playerScore = document.querySelector('#final-score');
+let playerInitials = document.querySelector('#final-initials');
+let seconds = 60;
+let answerPicked = false 
 
 // const
 const scoreBtn = document.getElementById('correct-answers');
@@ -13,7 +15,6 @@ const timerBox = document.getElementById('timer-box');
 const scoreHolder = document.getElementById('score-holder');
 const timer = document.getElementById('timer');
 
-
 // start / next / finish / answer /submit buttons
 const startButton = document.getElementById('start-btn');
 const nextButton = document.getElementById('next-btn');
@@ -23,7 +24,8 @@ const submitBtn = document.getElementById('submit-btn');
 
 // start game function
 function startGame() {
-    countDown();
+    alert('You have 60 seconds to finish this quiz, if time runs out you will be brought to the high-score page. Good luck!')
+    countDown2();
     startButton.classList.add('hide');
     nextButton.classList.remove('hide');
     questionContainerElement.classList.remove('hide');
@@ -33,7 +35,6 @@ function startGame() {
     currentQuestionsIndex = 0;
     shuffledQuestions = questions.sort(() => Math.random() - .5);
     setNextQuestion();
-    score = 0;
 };
 
 // set next question function
@@ -44,13 +45,14 @@ function setNextQuestion() {
 
 // show question function
 function showQuestion(question) {
+    answerPicked = false
     questionElement.innerText = question.question;
     question.answers.forEach(answer => {
         const button = document.createElement('button');
         button.innerText = answer.text;
         button.classList.add('btn');
         if (answer.correct) {
-            button.dataset.correct = answer.correct
+            button.dataset.correct = answer.correct   
         };
         button.addEventListener('click', selectAnswer);
         answerButtonsElement.appendChild(button);
@@ -63,6 +65,50 @@ function resetState() {
     while (answerButtonsElement.firstChild) {
         answerButtonsElement.removeChild(answerButtonsElement.firstChild);
     };
+};
+
+// timer function 
+// function countDown() {
+//     let tick = setInterval(function () {
+//     let counter = document.getElementById("time-left");
+//         counter.innerHTML = "Timer: " + String(seconds);
+//         if (seconds > 0) {
+//             seconds--;
+//         } else if (seconds === 0) {
+//             clearInterval(tick)
+//             // alert('Sorry, you ran out of time!')
+//             finishGame();
+//         }
+//     }, 1000)
+// };
+
+// timer 
+function countDown2() {
+let timeInterval = setInterval(function() {
+    let counter = document.getElementById('time-left');
+    counter.innerHTML = 'Timer: ' + seconds;
+    // As long as the `timeLeft` is greater than 1
+    if (seconds > 1) {
+      // Set the `textContent` of `counter` to show the remaining seconds
+      counter.textContent = 'Timer: ' + seconds;
+      // Decrement `seconds` by 1
+      seconds--;
+    } else {
+      // Once `seconds` gets to 0, set `timerEl` to an empty string
+      timer.innerHTML = '';
+      // Use `clearInterval()` to stop the timer
+      clearInterval(timeInterval);
+      // Call the `displayMessage()` function
+      finishGame();
+    }
+    if (seconds == 0) {
+        finishGame();
+    }
+  }, 1000);
+};
+
+function stopTimer() {
+    clearInterval(timeInterval);
 };
 
 // select answer function
@@ -79,8 +125,13 @@ function selectAnswer(e) {
         nextButton.classList.add('hide');
         finishButton.classList.remove('hide');
     };
-    if (selectedButton.dataset = correct) {
-        score+=7
+    if (answerPicked === false) {
+        if (selectedButton.dataset = correct) {
+            score += 7
+        } else {
+            seconds -= 5;
+        }
+        answerPicked = true
     }
     document.getElementById('correct-answers').innerHTML = "Score: " + score;
 };
@@ -90,7 +141,6 @@ function setStatusClass(element, correct) {
     clearStatusClass(element)
     if (correct) {
         element.classList.add('correct');
-
     } else {
         element.classList.add('wrong');
     };
@@ -100,40 +150,40 @@ function setStatusClass(element, correct) {
 function clearStatusClass(element) {
     element.classList.remove('correct');
     element.classList.remove('wrong');
-}
+};
 
 // finish game function
 function finishGame() {
     document.getElementById('finish-hide').classList.add('hide');
     document.getElementById('finish-show').classList.remove('hide');
     document.getElementById('container').classList.add('center-highscore');
-    document.getElementById('time-left').classList.add('hide');
     document.getElementById('timer').classList.add('hide');
-}
+    document.getElementById('timer').classList.add('hide');
+};
 
-// save high scores / intials
+// save high scores / initials
 function submitScore() {
     localStorage.setItem('player-initials', document.getElementById("name").value);
     localStorage.setItem('player-score', JSON.stringify(score));
-}
+};
 
 function renderLastRegistered() {
     // Retrieve the last email and password from localStorage using `getItem()`
-    var playerInitials= localStorage.getItem('player-initials');
-    var playerScore = localStorage.getItem('player-score');
-  
+    const playerInitials = localStorage.getItem('player-initials');
+    const playerScore = localStorage.getItem('player-score');
+
     // Set the text of the 'userEmailSpan' and 'userPasswordSpan' to the corresponding values from localStorage
     playerInitials.textContent = playerInitials;
     playerScore.textContent = playerScore;
-  
+
     document.getElementById("final-initials").innerHTML = localStorage.getItem("player-initials");
     document.getElementById("final-score").innerHTML = localStorage.getItem("player-score");
-}
+};
 
 // event listeners 
 startButton.addEventListener('click', startGame);
-nextButton.addEventListener('click', () => {currentQuestionsIndex++; setNextQuestion()});
-finishButton.addEventListener('click', finishGame, clearInterval(countDown, 0));
+nextButton.addEventListener('click', () => { currentQuestionsIndex++; setNextQuestion() });
+finishButton.addEventListener('click', finishGame, stopTimer);
 submitBtn.addEventListener('click', submitScore, renderLastRegistered);
 
 // list of questions
@@ -186,19 +236,3 @@ const questions = [
         ]
     },
 ];
-
-// timer function 
-
-function countDown() {
-    let seconds = 60
-    function tick() {
-        let counter = document.getElementById("time-left");
-        seconds--;
-        counter.innerHTML = "Timer: " + String(seconds);
-        if (seconds === 0) {alert('Sorry, you ran out of time!')
-        finishGame() 
-        } else (seconds > 0)
-            setTimeout(tick, 1000);
-    }
-    tick();
-};
