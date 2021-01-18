@@ -3,7 +3,7 @@ let score = 0;
 let shuffledQuestions, currentQuestionsIndex;
 let playerScore = document.querySelector('#final-score');
 let playerInitials = document.querySelector('#final-initials');
-let seconds = 600;
+let seconds = 60;
 let answerPicked = false
 let name = document.getElementById('name')
 let playerInfo = [];
@@ -152,10 +152,7 @@ function submitScore() {
         localStorage.setItem("player-initials", document.getElementById('name').value,
         localStorage.setItem("player-score", JSON.stringify(score)))
     };
-
-
-
-    // submitBtn.onclick = location.href = './highscores.html';
+    submitBtn.onclick = location.href = './highscores.html';
 };
 
 

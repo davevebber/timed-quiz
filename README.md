@@ -1,1 +1,2 @@
-# timed-quiz
+# Timed Quiz App
+
