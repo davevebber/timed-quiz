@@ -4,7 +4,7 @@ let shuffledQuestions, currentQuestionsIndex;
 let playerScore = document.querySelector('#final-score');
 let playerInitials = document.querySelector('#final-initials');
 let seconds = 60;
-let answerPicked = false 
+let answerPicked = false
 
 // const
 const scoreBtn = document.getElementById('correct-answers');
@@ -14,6 +14,7 @@ const scoreBox = document.getElementById('score-box');
 const timerBox = document.getElementById('timer-box');
 const scoreHolder = document.getElementById('score-holder');
 const timer = document.getElementById('timer');
+const name = document.getElementById('name')
 
 // start / next / finish / answer /submit buttons
 const startButton = document.getElementById('start-btn');
@@ -52,7 +53,7 @@ function showQuestion(question) {
         button.innerText = answer.text;
         button.classList.add('btn');
         if (answer.correct) {
-            button.dataset.correct = answer.correct   
+            button.dataset.correct = answer.correct
         };
         button.addEventListener('click', selectAnswer);
         answerButtonsElement.appendChild(button);
@@ -84,31 +85,27 @@ function resetState() {
 
 // timer 
 function countDown2() {
-let timeInterval = setInterval(function() {
-    let counter = document.getElementById('time-left');
-    counter.innerHTML = 'Timer: ' + seconds;
-    // As long as the `timeLeft` is greater than 1
-    if (seconds > 1) {
-      // Set the `textContent` of `counter` to show the remaining seconds
-      counter.textContent = 'Timer: ' + seconds;
-      // Decrement `seconds` by 1
-      seconds--;
-    } else {
-      // Once `seconds` gets to 0, set `timerEl` to an empty string
-      timer.innerHTML = '';
-      // Use `clearInterval()` to stop the timer
-      clearInterval(timeInterval);
-      // Call the `displayMessage()` function
-      finishGame();
-    }
-    if (seconds == 0) {
-        finishGame();
-    }
-  }, 1000);
-};
-
-function stopTimer() {
-    clearInterval(timeInterval);
+    let timeInterval = setInterval(function () {
+        let counter = document.getElementById('time-left');
+        counter.innerHTML = 'Timer: ' + seconds;
+        // As long as the `timeLeft` is greater than 1
+        if (seconds > 1) {
+            // Set the `textContent` of `counter` to show the remaining seconds
+            counter.textContent = 'Timer: ' + seconds;
+            // Decrement `seconds` by 1
+            seconds--;
+        } else {
+            // Once `seconds` gets to 0, set `timerEl` to an empty string
+            timer.innerHTML = '';
+            // Use `clearInterval()` to stop the timer
+            clearInterval(timeInterval);
+            // Call the `displayMessage()` function
+            finishGame();
+        }
+        if (seconds == 0) {
+            finishGame();
+        }
+    }, 1000);
 };
 
 // select answer function
@@ -163,28 +160,25 @@ function finishGame() {
 
 // save high scores / initials
 function submitScore() {
-    localStorage.setItem('player-initials', document.getElementById("name").value);
-    localStorage.setItem('player-score', JSON.stringify(score));
+    if (name == '') {
+        alert('Please enter your initials!')
+    } else {
+        localStorage.setItem('player-initials', document.getElementById("name").value);
+        localStorage.setItem('player-score', JSON.stringify(score));
+        submitBtn.onclick = location.href = './highscores.html';
+    }
+
 };
+// document.getElementById("myButton").onclick = function () {
+//     location.src = "./highscores.html";
+// };
 
-function renderLastRegistered() {
-    // Retrieve the last email and password from localStorage using `getItem()`
-    const playerInitials = localStorage.getItem('player-initials');
-    const playerScore = localStorage.getItem('player-score');
-
-    // Set the text of the 'userEmailSpan' and 'userPasswordSpan' to the corresponding values from localStorage
-    playerInitials.textContent = playerInitials;
-    playerScore.textContent = playerScore;
-
-    document.getElementById("final-initials").innerHTML = localStorage.getItem("player-initials");
-    document.getElementById("final-score").innerHTML = localStorage.getItem("player-score");
-};
 
 // event listeners 
 startButton.addEventListener('click', startGame);
 nextButton.addEventListener('click', () => { currentQuestionsIndex++; setNextQuestion() });
-finishButton.addEventListener('click', finishGame, stopTimer);
-submitBtn.addEventListener('click', submitScore, renderLastRegistered);
+finishButton.addEventListener('click', finishGame);
+submitBtn.addEventListener('click', submitScore);
 
 // list of questions
 const questions = [
