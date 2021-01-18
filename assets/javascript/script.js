@@ -3,8 +3,10 @@ let score = 0;
 let shuffledQuestions, currentQuestionsIndex;
 let playerScore = document.querySelector('#final-score');
 let playerInitials = document.querySelector('#final-initials');
-let seconds = 60;
+let seconds = 600;
 let answerPicked = false
+let name = document.getElementById('name')
+let playerInfo = [];
 
 // const
 const scoreBtn = document.getElementById('correct-answers');
@@ -14,7 +16,7 @@ const scoreBox = document.getElementById('score-box');
 const timerBox = document.getElementById('timer-box');
 const scoreHolder = document.getElementById('score-holder');
 const timer = document.getElementById('timer');
-const name = document.getElementById('name')
+
 
 // start / next / finish / answer /submit buttons
 const startButton = document.getElementById('start-btn');
@@ -26,7 +28,7 @@ const submitBtn = document.getElementById('submit-btn');
 // start game function
 function startGame() {
     alert('You have 60 seconds to finish this quiz, if time runs out you will be brought to the high-score page. Good luck!')
-    countDown2();
+    countDown();
     startButton.classList.add('hide');
     nextButton.classList.remove('hide');
     questionContainerElement.classList.remove('hide');
@@ -68,23 +70,7 @@ function resetState() {
     };
 };
 
-// timer function 
-// function countDown() {
-//     let tick = setInterval(function () {
-//     let counter = document.getElementById("time-left");
-//         counter.innerHTML = "Timer: " + String(seconds);
-//         if (seconds > 0) {
-//             seconds--;
-//         } else if (seconds === 0) {
-//             clearInterval(tick)
-//             // alert('Sorry, you ran out of time!')
-//             finishGame();
-//         }
-//     }, 1000)
-// };
-
-// timer 
-function countDown2() {
+function countDown() {
     let timeInterval = setInterval(function () {
         let counter = document.getElementById('time-left');
         counter.innerHTML = 'Timer: ' + seconds;
@@ -160,18 +146,19 @@ function finishGame() {
 
 // save high scores / initials
 function submitScore() {
-    if (name == '') {
-        alert('Please enter your initials!')
+    if (name.value === '' || null) {
+        window.alert('Please enter your initials!')
     } else {
-        localStorage.setItem('player-initials', document.getElementById("name").value);
-        localStorage.setItem('player-score', JSON.stringify(score));
-        submitBtn.onclick = location.href = './highscores.html';
-    }
+        localStorage.setItem("player-initials", document.getElementById('name').value,
+        localStorage.setItem("player-score", JSON.stringify(score)))
+    };
 
+
+
+    // submitBtn.onclick = location.href = './highscores.html';
 };
-// document.getElementById("myButton").onclick = function () {
-//     location.src = "./highscores.html";
-// };
+
+
 
 
 // event listeners 
